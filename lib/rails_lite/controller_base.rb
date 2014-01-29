@@ -54,9 +54,16 @@ class ControllerBase
 
   # method exposing a `Session` object
   def session
+    @res = Session.new(@req)
+  end
+
+  def update_session
+    @res.store_session(@res)
   end
 
   # use this with the router to call action_name (:index, :show, :create...)
   def invoke_action(name)
+    self.send(name)
+    self.render(name) unless already_rendered?
   end
 end
